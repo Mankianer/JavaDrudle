@@ -106,9 +106,10 @@ public class DrudleRuleResult {
     if (matchingParts.size() < usedParts.size()) return false;
     // Check if all characters from input are used in matching parts
     var o = input;
+    matchingParts.sort((a, b) -> b.length() - a.length());
     for (String part : matchingParts) {
-      if (part == null || part.isEmpty() || o.length() < part.length()) return false;
-      o = o.replace(part, "");
+      if (part == null || o.length() < part.length()) return false;
+      o = o.replaceFirst(part, "");
     }
     return o.isEmpty();
   }

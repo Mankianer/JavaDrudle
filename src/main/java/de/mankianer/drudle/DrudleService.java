@@ -10,6 +10,7 @@ import java.util.*;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @Log4j2
 @Service
@@ -27,8 +28,8 @@ class DrudleService {
     rules.add(
         new RegexRule(
             "exampleRule",
-            "(?<zwei>zwei)(?<x>\\w+)",
-            "({x},{x})",
+            "zwei",
+            "{head}({tail}*,{tail}*)",
             "macht aus zwei-X, doppel paar."));
   }
 
@@ -36,7 +37,7 @@ class DrudleService {
     drudle = drudle.toLowerCase();
     HashMap<String, Set<String>> solved = new HashMap<>();
     Queue<DrudleRuleResult> waiting = new LinkedList<>();
-  HashMap<String, List<Consumer<String>>> waitingForSolving = new HashMap<>();
+    HashMap<String, List<Consumer<String>>> waitingForSolving = new HashMap<>();
     Process currentProcess = getProcess(waiting, solved, waitingForSolving);
 
     var result = currentProcess.addToWaitingQueue(drudle);
@@ -54,7 +55,7 @@ class DrudleService {
       currentProcess.processUsedParts(current);
     }
 
-    return "Processed drudle: %s%nResult: %s".formatted(drudle, solved.get(drudle));
+    return "Processed drudle: %s%nResult: %n[%s]".formatted(drudle, String.join("|\n", solved.get(drudle) ));
   }
 
   private Process getProcess(Queue<DrudleRuleResult> waiting, HashMap<String, Set<String>> solved, HashMap<String, List<Consumer<String>>> waitingForSolving) {
@@ -90,12 +91,14 @@ class DrudleService {
     boolean addToWaitingQueue(String drudle) {
       boolean added = false;
       for (var rule : rules) {
-        var result = rule.apply(drudle);
-        if (result != null && result.isValid()) {
-          addWaiting.accept(result);
-          added = true;
-        } else if (result != null) {
-          log.error("Rule {} did not use all parts. Drudle: '{}'", rule.getName(), drudle);
+        List<DrudleRuleResult> results = rule.apply(drudle);
+        for (var result : results) {
+            if (result.isValid()) {
+              addWaiting.accept(result);
+              added = true;
+            } else {
+              log.error("Rule {} did not use all parts. Drudle: '{}'", rule.getName(), drudle);
+            }
         }
       }
       return added;
@@ -109,7 +112,7 @@ class DrudleService {
       var solved = getSolved.apply(drudle);
       if (!solved.contains(result)) {
         addSolved.accept(drudle, result);
-        log.info("Solved drudle '{}' to '{}' with rule {}", drudle, result, ruleName);
+        log.debug("Solved drudle '{}' to '{}' with rule {}", drudle, result, ruleName);
         alertSolvedConsumers.accept(drudle, result);
       }
     }

@@ -3,14 +3,16 @@ package de.mankianer.drudle;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.function.Function;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static java.util.stream.Collectors.toMap;
 
+@Log4j2
 @AllArgsConstructor
 @RequiredArgsConstructor
 public class RegexRule implements DrudleRule {
@@ -29,31 +31,77 @@ public class RegexRule implements DrudleRule {
    * @return the transformed drudle string or null if the rule does not apply
    */
   @Override
-  public DrudleRuleResult apply(String drudle) {
-    List<String> matchingParts = new ArrayList<>();
-    List<String> usedParts = new ArrayList<>();
-    final Map<String, String> valuesToParam = new HashMap<>();
+  public List<DrudleRuleResult> apply(String drudle) {
+    List<DrudleRuleResult> ret = new ArrayList<>();
 
-        var regex = java.util.regex.Pattern.compile(pattern);
-        var matcher = regex.matcher(drudle);
-        if (matcher.matches()) {
-            for (var groupName : regex.namedGroups().keySet()) {
-                valuesToParam.put(matcher.group(groupName), groupName);
-                matchingParts.add(matcher.group(groupName));
-                if (output.contains("{" + groupName + "}")) {
-                    usedParts.add(matcher.group(groupName));
-                }
+    var regex = Pattern.compile(pattern);
+    var matcher = regex.matcher(drudle);
+    while (matcher.find()) {
+      List<String> matchingParts = new ArrayList<>();
+      List<String> usedParts = new ArrayList<>();
+      final Map<String, String> valuesToParam = new HashMap<>();
+      Set<String> groupNames = new HashSet<>(regex.namedGroups().keySet());
+      String head = drudle.substring(0, matcher.start());
+      String content = drudle.substring(matcher.start(), matcher.end());
+      String tail = drudle.substring(matcher.end());
+
+      groupNames.add("head");
+      groupNames.add("content");
+      groupNames.add("tail");
+      Function<String, String> getValue =
+          (String name) -> {
+            if (name.equals("head")) return head;
+            if (name.equals("content")) return content;
+            if (name.equals("tail")) return tail;
+            return matcher.group(name);
+          };
+      for (var groupName : groupNames) {
+        String value = getValue.apply(groupName);
+        if (output.contains("{" + groupName + "}")) {
+          if (output.contains("{" + groupName + "}*") && (value == null || value.isEmpty())) {
+              log.info(
+                  "RegexRule '{}' drudle '{}': value is missing for group: {}",
+                  name,
+                  drudle,
+                  groupName);
+                break;
             }
-            return new DrudleRuleResult(name, drudle, matchingParts, usedParts, parts -> {
-                Map<String, String> mappedParts = parts.entrySet().stream().collect(toMap(entry -> valuesToParam.get(entry.getKey()), Map.Entry::getValue));
-                return getOutput(mappedParts);
-            });
+
+
+          usedParts.add(value);
         }
-        return null;
+        valuesToParam.put(value, groupName);
+        matchingParts.add(value);
+      }
+      if (matchingParts.stream().mapToInt(String::length).sum() == drudle.length()) {
+        DrudleRuleResult newDrudle =
+            new DrudleRuleResult(
+                name,
+                drudle,
+                matchingParts,
+                usedParts,
+                parts -> {
+                  Map<String, String> mappedParts =
+                      parts.entrySet().stream()
+                          .collect(
+                              toMap(
+                                  entry -> valuesToParam.get(entry.getKey()), Map.Entry::getValue));
+                  return getOutput(mappedParts);
+                });
+        ret.add(newDrudle);
+      } else {
+        log.info(
+            "RegexRule '{}' did not use all parts. Drudle: '{}', matched parts: {}",
+            name,
+            drudle,
+            matchingParts);
+      }
     }
+    return ret;
+  }
 
   private String getOutput(Map<String, String> fulfilledParts) {
-    var result = output;
+    var result = output.replace("*", "");
     for (var entry : fulfilledParts.entrySet()) {
       result = result.replace("{" + entry.getKey() + "}", entry.getValue());
     }
