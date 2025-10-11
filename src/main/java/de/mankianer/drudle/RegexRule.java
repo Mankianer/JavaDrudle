@@ -38,25 +38,40 @@ public class RegexRule implements DrudleRule {
       List<String> matchingParts = new ArrayList<>();
       List<String> usedParts = new ArrayList<>();
       final Map<String, Set<String>> valuesToParam = new HashMap<>();
-      Set<String> groupNames = new HashSet<>(regex.namedGroups().keySet());
+      List<String> groupNames =
+          new ArrayList<>(
+              regex.namedGroups().keySet().stream()
+                  .sorted(Comparator.comparingInt(matcher::start))
+                  .toList());
+      boolean hasSubGroups = !groupNames.isEmpty();
       String head = drudle.substring(0, matcher.start());
       String content = drudle.substring(matcher.start(), matcher.end());
+      List<String> subContents = new ArrayList<>();
       String tail = drudle.substring(matcher.end());
       // fill regex groups and head/tail/content
       groupNames.add("head");
       groupNames.add("content");
       groupNames.add("tail");
+      String[] contentAfter = {content};
       UnaryOperator<String> getValue =
           (String name) -> {
             if (name.equals("head")) return head;
             if (name.equals("content")) return content;
             if (name.equals("tail")) return tail;
-            return matcher.group(name);
+            String value = matcher.group(name);
+            int val_start = matcher.start(name);
+            int val_end = matcher.end(name);
+            String contentBefore =
+                contentAfter[0].substring(
+                    0, val_start - matcher.start() - (content.length() - contentAfter[0].length()));
+            contentAfter[0] = contentAfter[0].substring(contentBefore.length() + value.length());
+            subContents.add(contentBefore);
+            return value;
           };
       for (var groupName : groupNames) {
         String value = getValue.apply(groupName);
         if (output.contains("{" + groupName + "}")) {
-          if (output.contains("{" + groupName + "}*") && (value == null || value.isEmpty())) {
+          if (output.contains("{" + groupName + "}*") && value.isEmpty()) {
             log.info(
                 "RegexRule '{}' drudle '{}': value is missing for group: {}",
                 name,
@@ -72,6 +87,12 @@ public class RegexRule implements DrudleRule {
           valuesToParam.put(value, set);
         }
         matchingParts.add(value);
+      }
+      // split content by subgroups if needed
+      if (hasSubGroups) {
+        matchingParts.remove(content);
+        subContents.add(contentAfter[0]);
+        matchingParts.addAll(subContents);
       }
       // precheck if all parts are used
       if (matchingParts.stream().mapToInt(String::length).sum() == drudle.length()) {

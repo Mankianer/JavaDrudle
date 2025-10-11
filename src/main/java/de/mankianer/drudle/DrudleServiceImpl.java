@@ -30,11 +30,11 @@ class DrudleServiceImpl implements DrudleService {
             "{head}({tail}*,{tail}*)",
             "macht aus zwei-X, doppel paar."));
     rules.add(
-      new RegexRule(
-              "exampleRule",
-              "drei",
-              "{head}({tail}*,{tail}*,{tail}*)",
-              "macht aus zwei-X, doppel paar."));
+        new RegexRule(
+            "exampleRuleGroup",
+            "id(?<key>\\w+):(?<val>\\w+)end",
+                "{head}{val}-{key}{tail}",
+            "macht aus zwei-X, doppel paar."));
   }
 
   public void addRules(DrudleRule ...rules) {
