@@ -1,9 +1,9 @@
 package de.mankianer.drudle;
 
+import java.util.Set;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/drudle")
@@ -17,6 +17,13 @@ class DrudleController {
 
     @RequestMapping("/{drudle}")
     public String getDrudle(@PathVariable String drudle) {
-        return drudleService.processDrudle(drudle);
+        String ret;
+        Set<String> result = drudleService.processDrudle(drudle);
+        if (result.isEmpty()) {
+            ret = "No rule applied to drudle: %s".formatted(drudle);
+        } else {
+            ret = "Processed drudle: %s%nResult: %n[%s]".formatted(drudle, String.join("|\n", result ));
+        }
+        return ret;
     }
 }
