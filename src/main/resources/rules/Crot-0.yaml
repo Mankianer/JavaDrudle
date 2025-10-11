@@ -1,0 +1,5 @@
+name: Crot-0
+description: macht aus X-rot, ein rotes Element.
+pattern: rot
+output: |
+  <div style="color: red">{head}*</div>{tail}

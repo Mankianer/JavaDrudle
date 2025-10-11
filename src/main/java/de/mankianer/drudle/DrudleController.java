@@ -1,7 +1,6 @@
 package de.mankianer.drudle;
 
 import java.util.Set;
-import org.apache.batik.svggen.SVGGraphics2DIOException;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -19,7 +18,7 @@ class DrudleController {
     }
 
     @RequestMapping("/{drudle}")
-    public String getDrudle(@PathVariable String drudle) throws SVGGraphics2DIOException {
+    public String getDrudle(@PathVariable String drudle) {
         Set<String> result = drudleService.processDrudle(drudle);
         if (result.isEmpty()) {
             return "No rule applied to drudle: %s".formatted(drudle);

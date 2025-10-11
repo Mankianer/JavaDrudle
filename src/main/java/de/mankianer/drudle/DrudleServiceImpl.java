@@ -1,6 +1,7 @@
 package de.mankianer.drudle;
 
 import jakarta.annotation.PostConstruct;
+import java.io.IOException;
 import java.util.*;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
@@ -8,6 +9,10 @@ import java.util.function.Function;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.boot.env.YamlPropertySourceLoader;
+import org.springframework.core.env.PropertySource;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.stereotype.Service;
 
 @Log4j2
@@ -21,41 +26,31 @@ class DrudleServiceImpl implements DrudleService {
   }
 
   @PostConstruct
-  private void init() {
-    // Example rule
-    rules.add(
-        new RegexRule(
-            "exampleRule",
-            "zwei",
-            """
-            {head}
-            <div style="display: flex; flex-direction: row;">
-                <div>&nbsp;{tail}*</div>
-                <div>{tail}*</div>
-            </div>
-            """,
-            "macht aus zwei-X, doppel paar."));
-      rules.add(
-              new RegexRule(
-                      "exampleRule2",
-                      "zwei",
-                      """
-                      {head}
-                      <div style="display: flex; flex-direction: column;">
-                          <div>{tail}*</div>
-                          <div>{tail}*</div>
-                      </div>
-                      """,
-                      "macht aus zwei-X, doppel paar."));
-    rules.add(
-        new RegexRule(
-            "exampleRuleGroup",
-            "id(?<key>\\w+):(?<val>\\w+)end",
-                "{head}{val}-{key}{tail}",
-            "macht aus zwei-X, doppel paar."));
+  private void init() throws IOException {
+      loadYamlRules();
   }
 
-  public void addRules(DrudleRule ...rules) {
+  private void loadYamlRules() throws IOException {
+      PathMatchingResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
+      Resource[] resources = resolver.getResources("classpath:rules/*.yaml");
+      for (Resource res : resources) {
+          log.info("Found Rule: {}", res.getFilename());
+          rules.add(loadYamlRule(res));
+      }
+      log.info("Loaded {} rules", rules.size());
+  }
+
+  private RegexRule loadYamlRule(Resource resource) throws IOException {
+      YamlPropertySourceLoader loader = new YamlPropertySourceLoader();
+      PropertySource<?> yamlProperties =
+              loader.load(resource.getFilename(), resource).get(0);
+      return new RegexRule((String) yamlProperties.getName(),
+              (String) yamlProperties.getProperty("pattern"),
+              (String) yamlProperties.getProperty("output"),
+              (String) yamlProperties.getProperty("description"));
+  }
+
+  void addRules(DrudleRule ...rules) {
     this.rules.addAll(List.of(rules));
   }
 

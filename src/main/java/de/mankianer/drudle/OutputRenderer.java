@@ -1,17 +1,16 @@
 package de.mankianer.drudle;
 
 import java.util.Set;
-import org.apache.batik.svggen.SVGGraphics2DIOException;
 import org.springframework.stereotype.Service;
 
 @Service
 public class OutputRenderer {
 
-  public String render(String drudle, Set<String> result) throws SVGGraphics2DIOException {
+  public String render(String drudle, Set<String> result) {
 
     String htmlTemplate = """
     
-    <div style="background-color: white; border: 0.4em solid black; aspect-ratio: 1 / 1; width: 25em; display: flex; align-items: center; justify-content: center;">
+    <div style="background-color: white; border: 0.4em solid black; aspect-ratio: 1 / 1; width: 25em; display: flex; align-items: center; justify-content: center; font-family: Arial;">
         <div style="display: flex; align-items: center; justify-content: center; font-size: 4em;">
             %s
         </div>
