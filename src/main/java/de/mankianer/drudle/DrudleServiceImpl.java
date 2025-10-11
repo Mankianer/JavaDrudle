@@ -37,6 +37,10 @@ class DrudleServiceImpl implements DrudleService {
               "macht aus zwei-X, doppel paar."));
   }
 
+  public void addRules(DrudleRule ...rules) {
+    this.rules.addAll(List.of(rules));
+  }
+
   public Set<String> processDrudle(String drudle) {
     drudle = drudle.toLowerCase();
     HashMap<String, Set<String>> solved = new HashMap<>();
@@ -131,13 +135,16 @@ class DrudleServiceImpl implements DrudleService {
             };
         // Register consumer
         addWaitingSolvedList.accept(part.getKey(), consumer);
-        // Apply to already solved parts
-        for (var s : getSolved.apply(part.getKey())) {
-          consumer.accept(s);
-        }
-        boolean isRuleApplied = addToWaitingQueue(part.getKey());
-        if (!isRuleApplied) {
-          addToSolved(part.getKey(), part.getKey(), "NoRule");
+        if (!getSolved.apply(part.getKey()).isEmpty()) {
+            // Apply to already solved parts
+            for (var s : getSolved.apply(part.getKey())) {
+              consumer.accept(s);
+            }
+        } else {
+          boolean isRuleApplied = addToWaitingQueue(part.getKey());
+          if (!isRuleApplied) {
+            addToSolved(part.getKey(), part.getKey(), "NoRule");
+          }
         }
       }
     }
