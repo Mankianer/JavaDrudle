@@ -18,6 +18,7 @@ configurations {
     compileOnly {
         extendsFrom annotationProcessor
     }
+    mockitoAgent
 }
 
 repositories {
@@ -31,8 +32,19 @@ dependencies {
     annotationProcessor 'org.projectlombok:lombok'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+    testImplementation(libs.mockito)
+    mockitoAgent(libs.mockito) {
+        transitive = false
+    }
 }
 
 tasks.named('test') {
     useJUnitPlatform()
 }
+
+tasks {
+    test {
+        jvmArgs += "-javaagent:${configurations.mockitoAgent.asPath}"
+    }
+}
+
