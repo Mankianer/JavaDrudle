@@ -1,16 +1,14 @@
 package de.mankianer.drudle;
 
 import jakarta.annotation.PostConstruct;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.extern.log4j.Log4j2;
-import org.springframework.stereotype.Service;
-
 import java.util.*;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Function;
-import java.util.stream.Collectors;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.extern.log4j.Log4j2;
+import org.springframework.stereotype.Service;
 
 @Log4j2
 @Service
@@ -31,6 +29,12 @@ class DrudleService {
             "zwei",
             "{head}({tail}*,{tail}*)",
             "macht aus zwei-X, doppel paar."));
+    rules.add(
+      new RegexRule(
+              "exampleRule",
+              "drei",
+              "{head}({tail}*,{tail}*,{tail}*)",
+              "macht aus zwei-X, doppel paar."));
   }
 
   public String processDrudle(String drudle) {
@@ -50,8 +54,6 @@ class DrudleService {
         currentProcess.addToSolved(current);
         continue;
       }
-      // Not solved yet, try to fulfill parts
-      // Find part and register solved consumers and add part to waiting queue
       currentProcess.processUsedParts(current);
     }
 

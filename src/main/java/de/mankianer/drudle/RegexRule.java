@@ -1,16 +1,14 @@
 package de.mankianer.drudle;
 
+import static java.util.stream.Collectors.toMap;
+
+import java.util.*;
+import java.util.function.UnaryOperator;
+import java.util.regex.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-
-import java.util.*;
-import java.util.function.Function;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import static java.util.stream.Collectors.toMap;
 
 @Log4j2
 @AllArgsConstructor
@@ -44,11 +42,11 @@ public class RegexRule implements DrudleRule {
       String head = drudle.substring(0, matcher.start());
       String content = drudle.substring(matcher.start(), matcher.end());
       String tail = drudle.substring(matcher.end());
-
+      //fill regex groups and head/tail/content
       groupNames.add("head");
       groupNames.add("content");
       groupNames.add("tail");
-      Function<String, String> getValue =
+      UnaryOperator<String> getValue =
           (String name) -> {
             if (name.equals("head")) return head;
             if (name.equals("content")) return content;
@@ -64,15 +62,17 @@ public class RegexRule implements DrudleRule {
                   name,
                   drudle,
                   groupName);
+                // add
                 break;
             }
 
 
           usedParts.add(value);
+          valuesToParam.put(value, groupName);
         }
-        valuesToParam.put(value, groupName);
         matchingParts.add(value);
       }
+      //precheck if all parts are used
       if (matchingParts.stream().mapToInt(String::length).sum() == drudle.length()) {
         DrudleRuleResult newDrudle =
             new DrudleRuleResult(
@@ -91,8 +91,9 @@ public class RegexRule implements DrudleRule {
         ret.add(newDrudle);
       } else {
         log.info(
-            "RegexRule '{}' did not use all parts. Drudle: '{}', matched parts: {}",
+            "RegexRule '{}' did not use all parts with pattern '{}'. Drudle: '{}', matched parts: {}",
             name,
+            pattern,
             drudle,
             matchingParts);
       }
