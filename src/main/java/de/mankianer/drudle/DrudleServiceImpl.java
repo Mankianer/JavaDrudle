@@ -27,8 +27,26 @@ class DrudleServiceImpl implements DrudleService {
         new RegexRule(
             "exampleRule",
             "zwei",
-            "{head}({tail}*,{tail}*)",
+            """
+            {head}
+            <div style="display: flex; flex-direction: row;">
+                <div>&nbsp;{tail}*</div>
+                <div>{tail}*</div>
+            </div>
+            """,
             "macht aus zwei-X, doppel paar."));
+      rules.add(
+              new RegexRule(
+                      "exampleRule2",
+                      "zwei",
+                      """
+                      {head}
+                      <div style="display: flex; flex-direction: column;">
+                          <div>{tail}*</div>
+                          <div>{tail}*</div>
+                      </div>
+                      """,
+                      "macht aus zwei-X, doppel paar."));
     rules.add(
         new RegexRule(
             "exampleRuleGroup",
