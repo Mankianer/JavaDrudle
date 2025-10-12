@@ -1,0 +1,21 @@
+{% for n, word in numbers %}
+---
+name: R{{ n }}-0
+description: macht aus {{ word }}-X, eine {{ n }}er-Gruppe.
+pattern: {{ word }}
+output: |
+  {head}
+  <div style="display: flex; flex-direction: row;">
+      <div>&nbsp;{tail}*</div>{% for i in range(n-1) %}
+      <div>{tail}*</div>{% endfor %}
+  </div>
+---
+name: R{{ n }}-1
+description: macht aus {{ word }}-X, eine {{ n }}er-Gruppe.
+pattern: {{ word }}
+output: |
+  {head}
+  <div style="display: flex; flex-direction: column;">
+  {% for i in range(n) %}<div>{tail}*</div>
+  {% endfor %}</div>
+{% endfor %}
