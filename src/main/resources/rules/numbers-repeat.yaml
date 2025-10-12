@@ -1,0 +1,342 @@
+
+---
+name: R2-0
+description: macht aus zwei-X, eine 2er-Gruppe.
+pattern: zwei
+output: |
+  {head}
+  <div style="display: flex; flex-direction: row;">
+      <div>&nbsp;{tail}*</div>
+      <div>{tail}*</div>
+  </div>
+---
+name: R2-1
+description: macht aus zwei-X, eine 2er-Gruppe.
+pattern: zwei
+output: |
+  {head}
+  <div style="display: flex; flex-direction: column;">
+  <div>{tail}*</div>
+  <div>{tail}*</div>
+  </div>
+
+---
+name: R3-0
+description: macht aus drei-X, eine 3er-Gruppe.
+pattern: drei
+output: |
+  {head}
+  <div style="display: flex; flex-direction: row;">
+      <div>&nbsp;{tail}*</div>
+      <div>{tail}*</div>
+      <div>{tail}*</div>
+  </div>
+---
+name: R3-1
+description: macht aus drei-X, eine 3er-Gruppe.
+pattern: drei
+output: |
+  {head}
+  <div style="display: flex; flex-direction: column;">
+  <div>{tail}*</div>
+  <div>{tail}*</div>
+  <div>{tail}*</div>
+  </div>
+
+---
+name: R4-0
+description: macht aus vier-X, eine 4er-Gruppe.
+pattern: vier
+output: |
+  {head}
+  <div style="display: flex; flex-direction: row;">
+      <div>&nbsp;{tail}*</div>
+      <div>{tail}*</div>
+      <div>{tail}*</div>
+      <div>{tail}*</div>
+  </div>
+---
+name: R4-1
+description: macht aus vier-X, eine 4er-Gruppe.
+pattern: vier
+output: |
+  {head}
+  <div style="display: flex; flex-direction: column;">
+  <div>{tail}*</div>
+  <div>{tail}*</div>
+  <div>{tail}*</div>
+  <div>{tail}*</div>
+  </div>
+
+---
+name: R5-0
+description: macht aus fünf-X, eine 5er-Gruppe.
+pattern: fünf
+output: |
+  {head}
+  <div style="display: flex; flex-direction: row;">
+      <div>&nbsp;{tail}*</div>
+      <div>{tail}*</div>
+      <div>{tail}*</div>
+      <div>{tail}*</div>
+      <div>{tail}*</div>
+  </div>
+---
+name: R5-1
+description: macht aus fünf-X, eine 5er-Gruppe.
+pattern: fünf
+output: |
+  {head}
+  <div style="display: flex; flex-direction: column;">
+  <div>{tail}*</div>
+  <div>{tail}*</div>
+  <div>{tail}*</div>
+  <div>{tail}*</div>
+  <div>{tail}*</div>
+  </div>
+
+---
+name: R6-0
+description: macht aus sechs-X, eine 6er-Gruppe.
+pattern: sechs
+output: |
+  {head}
+  <div style="display: flex; flex-direction: row;">
+      <div>&nbsp;{tail}*</div>
+      <div>{tail}*</div>
+      <div>{tail}*</div>
+      <div>{tail}*</div>
+      <div>{tail}*</div>
+      <div>{tail}*</div>
+  </div>
+---
+name: R6-1
+description: macht aus sechs-X, eine 6er-Gruppe.
+pattern: sechs
+output: |
+  {head}
+  <div style="display: flex; flex-direction: column;">
+  <div>{tail}*</div>
+  <div>{tail}*</div>
+  <div>{tail}*</div>
+  <div>{tail}*</div>
+  <div>{tail}*</div>
+  <div>{tail}*</div>
+  </div>
+
+---
+name: R7-0
+description: macht aus sieben-X, eine 7er-Gruppe.
+pattern: sieben
+output: |
+  {head}
+  <div style="display: flex; flex-direction: row;">
+      <div>&nbsp;{tail}*</div>
+      <div>{tail}*</div>
+      <div>{tail}*</div>
+      <div>{tail}*</div>
+      <div>{tail}*</div>
+      <div>{tail}*</div>
+      <div>{tail}*</div>
+  </div>
+---
+name: R7-1
+description: macht aus sieben-X, eine 7er-Gruppe.
+pattern: sieben
+output: |
+  {head}
+  <div style="display: flex; flex-direction: column;">
+  <div>{tail}*</div>
+  <div>{tail}*</div>
+  <div>{tail}*</div>
+  <div>{tail}*</div>
+  <div>{tail}*</div>
+  <div>{tail}*</div>
+  <div>{tail}*</div>
+  </div>
+
+---
+name: R8-0
+description: macht aus acht-X, eine 8er-Gruppe.
+pattern: acht
+output: |
+  {head}
+  <div style="display: flex; flex-direction: row;">
+      <div>&nbsp;{tail}*</div>
+      <div>{tail}*</div>
+      <div>{tail}*</div>
+      <div>{tail}*</div>
+      <div>{tail}*</div>
+      <div>{tail}*</div>
+      <div>{tail}*</div>
+      <div>{tail}*</div>
+  </div>
+---
+name: R8-1
+description: macht aus acht-X, eine 8er-Gruppe.
+pattern: acht
+output: |
+  {head}
+  <div style="display: flex; flex-direction: column;">
+  <div>{tail}*</div>
+  <div>{tail}*</div>
+  <div>{tail}*</div>
+  <div>{tail}*</div>
+  <div>{tail}*</div>
+  <div>{tail}*</div>
+  <div>{tail}*</div>
+  <div>{tail}*</div>
+  </div>
+
+---
+name: R9-0
+description: macht aus neun-X, eine 9er-Gruppe.
+pattern: neun
+output: |
+  {head}
+  <div style="display: flex; flex-direction: row;">
+      <div>&nbsp;{tail}*</div>
+      <div>{tail}*</div>
+      <div>{tail}*</div>
+      <div>{tail}*</div>
+      <div>{tail}*</div>
+      <div>{tail}*</div>
+      <div>{tail}*</div>
+      <div>{tail}*</div>
+      <div>{tail}*</div>
+  </div>
+---
+name: R9-1
+description: macht aus neun-X, eine 9er-Gruppe.
+pattern: neun
+output: |
+  {head}
+  <div style="display: flex; flex-direction: column;">
+  <div>{tail}*</div>
+  <div>{tail}*</div>
+  <div>{tail}*</div>
+  <div>{tail}*</div>
+  <div>{tail}*</div>
+  <div>{tail}*</div>
+  <div>{tail}*</div>
+  <div>{tail}*</div>
+  <div>{tail}*</div>
+  </div>
+
+---
+name: R10-0
+description: macht aus zehn-X, eine 10er-Gruppe.
+pattern: zehn
+output: |
+  {head}
+  <div style="display: flex; flex-direction: row;">
+      <div>&nbsp;{tail}*</div>
+      <div>{tail}*</div>
+      <div>{tail}*</div>
+      <div>{tail}*</div>
+      <div>{tail}*</div>
+      <div>{tail}*</div>
+      <div>{tail}*</div>
+      <div>{tail}*</div>
+      <div>{tail}*</div>
+      <div>{tail}*</div>
+  </div>
+---
+name: R10-1
+description: macht aus zehn-X, eine 10er-Gruppe.
+pattern: zehn
+output: |
+  {head}
+  <div style="display: flex; flex-direction: column;">
+  <div>{tail}*</div>
+  <div>{tail}*</div>
+  <div>{tail}*</div>
+  <div>{tail}*</div>
+  <div>{tail}*</div>
+  <div>{tail}*</div>
+  <div>{tail}*</div>
+  <div>{tail}*</div>
+  <div>{tail}*</div>
+  <div>{tail}*</div>
+  </div>
+
+---
+name: R11-0
+description: macht aus elf-X, eine 11er-Gruppe.
+pattern: elf
+output: |
+  {head}
+  <div style="display: flex; flex-direction: row;">
+      <div>&nbsp;{tail}*</div>
+      <div>{tail}*</div>
+      <div>{tail}*</div>
+      <div>{tail}*</div>
+      <div>{tail}*</div>
+      <div>{tail}*</div>
+      <div>{tail}*</div>
+      <div>{tail}*</div>
+      <div>{tail}*</div>
+      <div>{tail}*</div>
+      <div>{tail}*</div>
+  </div>
+---
+name: R11-1
+description: macht aus elf-X, eine 11er-Gruppe.
+pattern: elf
+output: |
+  {head}
+  <div style="display: flex; flex-direction: column;">
+  <div>{tail}*</div>
+  <div>{tail}*</div>
+  <div>{tail}*</div>
+  <div>{tail}*</div>
+  <div>{tail}*</div>
+  <div>{tail}*</div>
+  <div>{tail}*</div>
+  <div>{tail}*</div>
+  <div>{tail}*</div>
+  <div>{tail}*</div>
+  <div>{tail}*</div>
+  </div>
+
+---
+name: R12-0
+description: macht aus zwölf-X, eine 12er-Gruppe.
+pattern: zwölf
+output: |
+  {head}
+  <div style="display: flex; flex-direction: row;">
+      <div>&nbsp;{tail}*</div>
+      <div>{tail}*</div>
+      <div>{tail}*</div>
+      <div>{tail}*</div>
+      <div>{tail}*</div>
+      <div>{tail}*</div>
+      <div>{tail}*</div>
+      <div>{tail}*</div>
+      <div>{tail}*</div>
+      <div>{tail}*</div>
+      <div>{tail}*</div>
+      <div>{tail}*</div>
+  </div>
+---
+name: R12-1
+description: macht aus zwölf-X, eine 12er-Gruppe.
+pattern: zwölf
+output: |
+  {head}
+  <div style="display: flex; flex-direction: column;">
+  <div>{tail}*</div>
+  <div>{tail}*</div>
+  <div>{tail}*</div>
+  <div>{tail}*</div>
+  <div>{tail}*</div>
+  <div>{tail}*</div>
+  <div>{tail}*</div>
+  <div>{tail}*</div>
+  <div>{tail}*</div>
+  <div>{tail}*</div>
+  <div>{tail}*</div>
+  <div>{tail}*</div>
+  </div>
+

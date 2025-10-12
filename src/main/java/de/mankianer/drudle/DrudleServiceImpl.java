@@ -34,20 +34,23 @@ class DrudleServiceImpl implements DrudleService {
       PathMatchingResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
       Resource[] resources = resolver.getResources("classpath:rules/*.yaml");
       for (Resource res : resources) {
-          log.info("Found Rule: {}", res.getFilename());
-          rules.add(loadYamlRule(res));
+          loadYamlRule(res).forEach((rule) -> {
+            log.info("Found Rule: {}", rule.getName());
+            rules.add(rule);
+          });
       }
       log.info("Loaded {} rules", rules.size());
   }
 
-  private RegexRule loadYamlRule(Resource resource) throws IOException {
+  private List<RegexRule> loadYamlRule(Resource resource) throws IOException {
       YamlPropertySourceLoader loader = new YamlPropertySourceLoader();
-      PropertySource<?> yamlProperties =
-              loader.load(resource.getFilename(), resource).get(0);
-      return new RegexRule((String) yamlProperties.getName(),
-              (String) yamlProperties.getProperty("pattern"),
-              (String) yamlProperties.getProperty("output"),
-              (String) yamlProperties.getProperty("description"));
+      List<PropertySource<?>> load = loader.load(resource.getFilename(), resource);
+      return load.stream().map((yp) -> {
+          return new RegexRule(resource.getFilename() + "-" + ((String) yp.getProperty("name")),
+                  (String) yp.getProperty("pattern"),
+                  (String) yp.getProperty("output"),
+                  (String) yp.getProperty("description"));
+      }).toList();
   }
 
   void addRules(DrudleRule ...rules) {

@@ -1,9 +1,0 @@
-name: R2-0
-description: macht aus zwei-X, doppel paar.
-pattern: zwei
-output: |
-  {head}
-  <div style="display: flex; flex-direction: row;">
-      <div>&nbsp;{tail}*</div>
-      <div>{tail}*</div>
-  </div>
