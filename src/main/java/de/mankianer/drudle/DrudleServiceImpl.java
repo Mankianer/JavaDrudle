@@ -1,5 +1,6 @@
 package de.mankianer.drudle;
 
+import de.mankianer.drudle.DrudleRuleResult.DrudleRuleResultSolved;
 import jakarta.annotation.PostConstruct;
 import java.io.IOException;
 import java.util.*;
@@ -19,41 +20,43 @@ import org.springframework.stereotype.Service;
 @Service
 class DrudleServiceImpl implements DrudleService {
 
-  private final List<DrudleRule> rules;
-
-  DrudleServiceImpl() {
-    this.rules = new ArrayList<>();
-  }
+  private final List<DrudleRule> rules = new ArrayList<>();
 
   @PostConstruct
   private void init() throws IOException {
-      loadYamlRules();
+    loadYamlRules();
   }
 
   private void loadYamlRules() throws IOException {
-      PathMatchingResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
-      Resource[] resources = resolver.getResources("classpath:rules/*.yaml");
-      for (Resource res : resources) {
-          loadYamlRule(res).forEach((rule) -> {
-            log.info("Found Rule: {}", rule.getName());
-            rules.add(rule);
-          });
-      }
-      log.info("Loaded {} rules", rules.size());
+    PathMatchingResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
+    Resource[] resources = resolver.getResources("classpath:rules/*.yaml");
+    for (Resource res : resources) {
+      loadYamlRule(res)
+          .forEach(
+              (rule) -> {
+                log.info("Found Rule: {}", rule.getName());
+                rules.add(rule);
+              });
+    }
+    log.info("Loaded {} rules", rules.size());
   }
 
   private List<RegexRule> loadYamlRule(Resource resource) throws IOException {
-      YamlPropertySourceLoader loader = new YamlPropertySourceLoader();
-      List<PropertySource<?>> load = loader.load(resource.getFilename(), resource);
-      return load.stream().map((yp) -> {
-          return new RegexRule(resource.getFilename() + "-" + ((String) yp.getProperty("name")),
+    YamlPropertySourceLoader loader = new YamlPropertySourceLoader();
+    List<PropertySource<?>> load = loader.load(resource.getFilename(), resource);
+    return load.stream()
+        .map(
+            (yp) -> {
+              return new RegexRule(
+                  resource.getFilename() + "-" + ((String) yp.getProperty("name")),
                   (String) yp.getProperty("pattern"),
                   (String) yp.getProperty("output"),
                   (String) yp.getProperty("description"));
-      }).toList();
+            })
+        .toList();
   }
 
-  void addRules(DrudleRule ...rules) {
+  void addRules(DrudleRule... rules) {
     this.rules.addAll(List.of(rules));
   }
 
@@ -70,8 +73,9 @@ class DrudleServiceImpl implements DrudleService {
     }
     while (!waiting.isEmpty()) {
       DrudleRuleResult current = waiting.poll();
-      if (current.isSolved()) {
-        currentProcess.addToSolved(current);
+      var currentSolved = current.getSolvedResult();
+      if (currentSolved != null) {
+        currentProcess.addToSolved(currentSolved);
         continue;
       }
       currentProcess.processUsedParts(current);
@@ -80,8 +84,10 @@ class DrudleServiceImpl implements DrudleService {
     return solved.get(drudle);
   }
 
-  private Process getProcess(Queue<DrudleRuleResult> waiting, HashMap<String, Set<DrudleRuleResult>> solved, HashMap<String, List<Consumer<DrudleRuleResult>>> waitingForSolving) {
-
+  private Process getProcess(
+      Queue<DrudleRuleResult> waiting,
+      HashMap<String, Set<DrudleRuleResult>> solved,
+      HashMap<String, List<Consumer<DrudleRuleResult>>> waitingForSolving) {
 
     return new Process(
         waiting::add,
@@ -106,7 +112,7 @@ class DrudleServiceImpl implements DrudleService {
   private class Process {
     private final Consumer<DrudleRuleResult> addWaiting;
     private final Function<String, Set<DrudleRuleResult>> getSolved;
-    private final BiConsumer<String, DrudleRuleResult> addSolved;
+    private final BiConsumer<String, DrudleRuleResultSolved> addSolved;
     private final BiConsumer<String, Consumer<DrudleRuleResult>> addWaitingSolvedList;
     private final BiConsumer<String, DrudleRuleResult> alertSolvedConsumers;
 
@@ -115,26 +121,23 @@ class DrudleServiceImpl implements DrudleService {
       for (var rule : rules) {
         List<DrudleRuleResult> results = rule.apply(drudle);
         for (var result : results) {
-            if (result.isValid()) {
-              addWaiting.accept(result);
-              added = true;
-            } else {
-              log.error("Rule {} did not use all parts. Drudle: '{}'", rule.getName(), drudle);
-            }
+          if (result.isValid()) {
+            addWaiting.accept(result);
+            added = true;
+          } else {
+            log.error("Rule {} did not use all parts. Drudle: '{}'", rule.getName(), drudle);
+          }
         }
       }
       return added;
     }
 
-    void addToSolved(DrudleRuleResult result) {
-      addToSolved(result.getInput(), result, result.getRuleName());
-    }
-
-    void addToSolved(String drudle, DrudleRuleResult result, String ruleName) {
+    void addToSolved(DrudleRuleResultSolved result) {
+      var drudle = result.getInput();
       var solved = getSolved.apply(drudle);
       if (!solved.contains(result)) {
         addSolved.accept(drudle, result);
-        log.debug("Solved drudle '{}' to '{}' with rule {}", drudle, result, ruleName);
+        log.debug("Solved drudle '{}' to '{}' with rule {}", drudle, result, result.getRuleName());
         alertSolvedConsumers.accept(drudle, result);
       }
     }
@@ -152,16 +155,13 @@ class DrudleServiceImpl implements DrudleService {
         // Register consumer
         addWaitingSolvedList.accept(part.getKey(), consumer);
         if (!getSolved.apply(part.getKey()).isEmpty()) {
-            // Apply to already solved parts
-            for (var s : getSolved.apply(part.getKey())) {
-              consumer.accept(s);
-            }
-        } else {
-          boolean isRuleApplied = addToWaitingQueue(part.getKey());
-          if (!isRuleApplied) {
-
-            addToSolved(part.getKey(), new DrudleRuleResult.DrudleRuleResultSolved(part.getKey()), "NoRule");
+          // Apply to already solved parts
+          for (var s : getSolved.apply(part.getKey())) {
+            consumer.accept(s);
           }
+        } else {
+          addToWaitingQueue(part.getKey());
+          addToSolved(new DrudleRuleResultSolved(part.getKey()));
         }
       }
     }

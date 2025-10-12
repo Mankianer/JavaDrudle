@@ -28,6 +28,13 @@ output: |
   {head}e{tail}
 
 ---
+name: el->l-0
+description: macht aus el -> l.
+pattern: el
+output: |
+  {head}l{tail}
+
+---
 name: ä->a-0
 description: macht aus ä -> a.
 pattern: ä

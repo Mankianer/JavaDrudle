@@ -103,7 +103,7 @@ public class DrudleRuleResult {
   }
 
   public DrudleRuleResultSolved getSolvedResult() {
-    if (fulfilledParts.size() >= usedParts.size()) {
+    if (isSolved()) {
       return new DrudleRuleResultSolved(
           ruleName, input, output, matchingParts, usedParts, previousResults == null ? List.of() : previousResults);
     }
