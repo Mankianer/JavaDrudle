@@ -57,11 +57,11 @@ class DrudleServiceImpl implements DrudleService {
     this.rules.addAll(List.of(rules));
   }
 
-  public Set<String> processDrudle(String drudle) {
+  public Set<DrudleRuleResult> processDrudle(String drudle) {
     drudle = drudle.toLowerCase();
-    HashMap<String, Set<String>> solved = new HashMap<>();
+    HashMap<String, Set<DrudleRuleResult>> solved = new HashMap<>();
     Queue<DrudleRuleResult> waiting = new LinkedList<>();
-    HashMap<String, List<Consumer<String>>> waitingForSolving = new HashMap<>();
+    HashMap<String, List<Consumer<DrudleRuleResult>>> waitingForSolving = new HashMap<>();
     Process currentProcess = getProcess(waiting, solved, waitingForSolving);
 
     var result = currentProcess.addToWaitingQueue(drudle);
@@ -80,7 +80,7 @@ class DrudleServiceImpl implements DrudleService {
     return solved.get(drudle);
   }
 
-  private Process getProcess(Queue<DrudleRuleResult> waiting, HashMap<String, Set<String>> solved, HashMap<String, List<Consumer<String>>> waitingForSolving) {
+  private Process getProcess(Queue<DrudleRuleResult> waiting, HashMap<String, Set<DrudleRuleResult>> solved, HashMap<String, List<Consumer<DrudleRuleResult>>> waitingForSolving) {
 
 
     return new Process(
@@ -105,10 +105,10 @@ class DrudleServiceImpl implements DrudleService {
   @Data
   private class Process {
     private final Consumer<DrudleRuleResult> addWaiting;
-    private final Function<String, Set<String>> getSolved;
-    private final BiConsumer<String, String> addSolved;
-    private final BiConsumer<String, Consumer<String>> addWaitingSolvedList;
-    private final BiConsumer<String, String> alertSolvedConsumers;
+    private final Function<String, Set<DrudleRuleResult>> getSolved;
+    private final BiConsumer<String, DrudleRuleResult> addSolved;
+    private final BiConsumer<String, Consumer<DrudleRuleResult>> addWaitingSolvedList;
+    private final BiConsumer<String, DrudleRuleResult> alertSolvedConsumers;
 
     boolean addToWaitingQueue(String drudle) {
       boolean added = false;
@@ -127,10 +127,10 @@ class DrudleServiceImpl implements DrudleService {
     }
 
     void addToSolved(DrudleRuleResult result) {
-      addToSolved(result.getInput(), result.getOutput(), result.getRuleName());
+      addToSolved(result.getInput(), result, result.getRuleName());
     }
 
-    void addToSolved(String drudle, String result, String ruleName) {
+    void addToSolved(String drudle, DrudleRuleResult result, String ruleName) {
       var solved = getSolved.apply(drudle);
       if (!solved.contains(result)) {
         addSolved.accept(drudle, result);
@@ -142,7 +142,7 @@ class DrudleServiceImpl implements DrudleService {
     void processUsedParts(DrudleRuleResult current) {
       for (var part : current.getUsedPartsFulfillmentConsumerMap().entrySet()) {
         // Create consumer
-        Consumer<String> consumer =
+        Consumer<DrudleRuleResult> consumer =
             (s) -> {
               DrudleRuleResult applied = part.getValue().apply(s);
               if (applied != null) {
@@ -159,7 +159,8 @@ class DrudleServiceImpl implements DrudleService {
         } else {
           boolean isRuleApplied = addToWaitingQueue(part.getKey());
           if (!isRuleApplied) {
-            addToSolved(part.getKey(), part.getKey(), "NoRule");
+
+            addToSolved(part.getKey(), new DrudleRuleResult.DrudleRuleResultSolved(part.getKey()), "NoRule");
           }
         }
       }

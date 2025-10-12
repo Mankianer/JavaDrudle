@@ -68,13 +68,15 @@ public class OutputRenderer {
 
     """;
 
-  public String render(String drudle, Set<String> result) {
+  public String render(String drudle, Set<DrudleRuleResult> result) {
 
 
     StringBuilder ret = new StringBuilder();
       ret.append("<h2>Input: %s</h2>".formatted(drudle));
-    for (String res : result) {
-        ret.append(htmlTemplate.formatted(res));
+    for (DrudleRuleResult res : result) {
+        ret.append(htmlTemplate.formatted(res.getOutput()));
+        ret.append("<br/>Used Rules:");
+        res.getPreviousResults().forEach(r -> ret.append("<br/>%s: %s ->".formatted(r.getRuleName(),r.getInput())));
     }
 
     return ret.toString();

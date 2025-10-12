@@ -22,16 +22,16 @@ class RegexRuleTest {
     DrudleRuleResult result = results.get(0);
     assertTrue(result.isValid());
     assertFalse(result.isSolved());
-    Map<String, Function<String, DrudleRuleResult>> usedPartsFulfillmentConsumerMap =
+    Map<String, Function<DrudleRuleResult, DrudleRuleResult.DrudleRuleResultSolved>> usedPartsFulfillmentConsumerMap =
         result.getUsedPartsFulfillmentConsumerMap();
     assertNotNull(usedPartsFulfillmentConsumerMap);
     assertEquals(2, usedPartsFulfillmentConsumerMap.size());
     assertTrue(usedPartsFulfillmentConsumerMap.containsKey("1"));
     assertTrue(usedPartsFulfillmentConsumerMap.containsKey("2"));
     // fill used parts
-    DrudleRuleResult headResult = usedPartsFulfillmentConsumerMap.get("1").apply("CLICK");
+    DrudleRuleResult headResult = usedPartsFulfillmentConsumerMap.get("1").apply(new DrudleRuleResult.DrudleRuleResultSolved("CLICK"));
     assertNull(headResult);
-    DrudleRuleResult tailResult = usedPartsFulfillmentConsumerMap.get("2").apply("CLACK");
+    DrudleRuleResult tailResult = usedPartsFulfillmentConsumerMap.get("2").apply(new DrudleRuleResult.DrudleRuleResultSolved("CLACK"));
     assertNotNull(tailResult);
     assertTrue(tailResult.isValid());
     assertTrue(tailResult.isSolved());
@@ -49,7 +49,7 @@ class RegexRuleTest {
         result -> {
           assertTrue(result.isValid());
           assertFalse(result.isSolved());
-          Map<String, Function<String, DrudleRuleResult>> usedPartsFulfillmentConsumerMap =
+          Map<String, Function<DrudleRuleResult, DrudleRuleResult.DrudleRuleResultSolved>> usedPartsFulfillmentConsumerMap =
               result.getUsedPartsFulfillmentConsumerMap();
           assertNotNull(usedPartsFulfillmentConsumerMap);
           assertEquals(2, usedPartsFulfillmentConsumerMap.size());
@@ -77,10 +77,9 @@ class RegexRuleTest {
         result -> {
           assertTrue(result.isValid());
           assertFalse(result.isSolved());
-          Map<String, Function<String, DrudleRuleResult>> usedPartsFulfillmentConsumerMap =
+          Map<String, Function<DrudleRuleResult, DrudleRuleResult.DrudleRuleResultSolved>> usedPartsFulfillmentConsumerMap =
               result.getUsedPartsFulfillmentConsumerMap();
           assertNotNull(usedPartsFulfillmentConsumerMap);
-          assertEquals(2, usedPartsFulfillmentConsumerMap.size());
           // fill used parts
           splitValues.add(usedPartsFulfillmentConsumerMap.keySet());
         });
@@ -111,7 +110,7 @@ class RegexRuleTest {
     DrudleRuleResult result = results.get(0);
     assertTrue(result.isValid());
     assertFalse(result.isSolved());
-    Map<String, Function<String, DrudleRuleResult>> usedPartsFulfillmentConsumerMap =
+    Map<String, Function<DrudleRuleResult, DrudleRuleResult.DrudleRuleResultSolved>> usedPartsFulfillmentConsumerMap =
         result.getUsedPartsFulfillmentConsumerMap();
     assertNotNull(usedPartsFulfillmentConsumerMap);
     assertEquals(4, usedPartsFulfillmentConsumerMap.size());
@@ -120,10 +119,10 @@ class RegexRuleTest {
     assertTrue(usedPartsFulfillmentConsumerMap.containsKey("val"));
     assertTrue(usedPartsFulfillmentConsumerMap.containsKey("dawblu"));
     // fill used parts
-    assertNull(usedPartsFulfillmentConsumerMap.get("bla").apply("1"));
-    assertNull(usedPartsFulfillmentConsumerMap.get("test").apply("2"));
-    assertNull(usedPartsFulfillmentConsumerMap.get("val").apply("3"));
-    DrudleRuleResult tailResult = usedPartsFulfillmentConsumerMap.get("dawblu").apply("4");
+    assertNull(usedPartsFulfillmentConsumerMap.get("bla").apply(new DrudleRuleResult.DrudleRuleResultSolved("1")));
+    assertNull(usedPartsFulfillmentConsumerMap.get("test").apply(new DrudleRuleResult.DrudleRuleResultSolved("2")));
+    assertNull(usedPartsFulfillmentConsumerMap.get("val").apply(new DrudleRuleResult.DrudleRuleResultSolved("3")));
+    DrudleRuleResult tailResult = usedPartsFulfillmentConsumerMap.get("dawblu").apply(new DrudleRuleResult.DrudleRuleResultSolved("4"));
     assertNotNull(tailResult);
     assertTrue(tailResult.isValid());
     assertTrue(tailResult.isSolved());

@@ -19,7 +19,7 @@ class DrudleController {
 
     @RequestMapping("/{drudle}")
     public String getDrudle(@PathVariable String drudle) {
-        Set<String> result = drudleService.processDrudle(drudle);
+        Set<DrudleRuleResult> result = drudleService.processDrudle(drudle);
         if (result.isEmpty()) {
             return "No rule applied to drudle: %s".formatted(drudle);
         }

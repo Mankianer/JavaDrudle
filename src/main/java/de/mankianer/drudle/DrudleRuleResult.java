@@ -1,18 +1,20 @@
 package de.mankianer.drudle;
 
-import lombok.Getter;
+import static java.util.stream.Collectors.toMap;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
-
-import static java.util.stream.Collectors.toMap;
+import lombok.Getter;
 
 public class DrudleRuleResult {
   @Getter private final String ruleName;
   @Getter private final String input;
   @Getter private final String output;
+  @Getter
+  protected List<DrudleRuleResult> previousResults;
 
   /** List of parts that matched the input string */
   private final List<String> matchingParts;
@@ -24,7 +26,7 @@ public class DrudleRuleResult {
 
   /** Map of functions to fulfill the used parts of the rule. Functions returns <br>null: if function is unsolved<br>DrudleRuleResult: if all functions are solved*/
   @Getter
-  private final Map<String, Function<String, DrudleRuleResult>> usedPartsFulfillmentConsumerMap;
+  private final Map<String, Function<DrudleRuleResult, DrudleRuleResultSolved>> usedPartsFulfillmentConsumerMap;
 
   /**
    * Constructor for an unsolved DrudleRuleResult. The output is generated when all used parts are
@@ -72,7 +74,7 @@ public class DrudleRuleResult {
    *
    * @return
    */
-  private Map<String, Function<String, DrudleRuleResult>> getUsedPartsFulfillmentConsumerMap(
+  private Map<String, Function<DrudleRuleResult, DrudleRuleResultSolved>> getUsedPartsFulfillmentConsumerMap(
       Function<Map<String, String>, String> loadOutput) {
     return usedParts.stream()
         .distinct()
@@ -80,15 +82,17 @@ public class DrudleRuleResult {
             toMap(
                 part -> part,
                 part ->
-                    (String value) -> {
-                      fulfilledParts.put(part, value);
+                    (DrudleRuleResult solved) -> {
+                      fulfilledParts.put(part, solved.getOutput());
                       if (fulfilledParts.size() == usedParts.size()) {
-                        return new DrudleRuleResult(
+                          var previous = new ArrayList<>(solved.getPreviousResults());
+                          previous.add(this);
+                        return new DrudleRuleResultSolved(
                             ruleName,
                             input,
                             loadOutput.apply(fulfilledParts),
                             matchingParts,
-                            usedParts);
+                            usedParts, previous);
                       }
                       return null;
                     }));
@@ -96,6 +100,14 @@ public class DrudleRuleResult {
 
   public boolean isSolved() {
     return output != null && !output.isEmpty();
+  }
+
+  public DrudleRuleResultSolved getSolvedResult() {
+    if (fulfilledParts.size() >= usedParts.size()) {
+      return new DrudleRuleResultSolved(
+          ruleName, input, output, matchingParts, usedParts, previousResults == null ? List.of() : previousResults);
+    }
+    return null;
   }
 
   public boolean isValid() {
@@ -112,5 +124,24 @@ public class DrudleRuleResult {
       o = o.replaceFirst(part, "");
     }
     return o.isEmpty();
+  }
+
+  public static class DrudleRuleResultSolved extends DrudleRuleResult {
+    protected DrudleRuleResultSolved(
+        String ruleName,
+        String input,
+        String output,
+        List<String> matchingParts,
+        List<String> usedParts,
+        List<DrudleRuleResult> previousResults) {
+      super(ruleName, input, output, matchingParts, usedParts);
+        this.previousResults = List.copyOf(previousResults);
+    }
+
+    public DrudleRuleResultSolved(String unsolvedValue) {
+        super("NoRule", unsolvedValue, unsolvedValue, List.of(unsolvedValue), List.of(unsolvedValue));
+        this.previousResults = List.of();
+    }
+
   }
 }

@@ -68,6 +68,7 @@ public class RegexRule implements DrudleRule {
             subContents.add(contentBefore);
             return value;
           };
+      boolean missingGroup = false;
       for (var groupName : groupNames) {
         String value = getValue.apply(groupName);
         if (output.contains("{" + groupName + "}")) {
@@ -77,7 +78,7 @@ public class RegexRule implements DrudleRule {
                 name,
                 drudle,
                 groupName);
-            // add
+            missingGroup = true;
             break;
           }
 
@@ -95,7 +96,7 @@ public class RegexRule implements DrudleRule {
         matchingParts.addAll(subContents);
       }
       // precheck if all parts are used
-      if (matchingParts.stream().mapToInt(String::length).sum() == drudle.length()) {
+      if (matchingParts.stream().mapToInt(String::length).sum() == drudle.length() && !missingGroup) {
         DrudleRuleResult newDrudle =
             new DrudleRuleResult(
                 name,

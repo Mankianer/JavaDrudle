@@ -5,6 +5,7 @@ import static org.mockito.Mockito.*;
 import static org.mockito.Mockito.times;
 
 import java.util.Set;
+import java.util.stream.Collectors;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -26,7 +27,7 @@ class DrudleServiceImplSimpleRuleTest {
     void testNotApply() {
         // apply drudle to service that does not match
         String drudle = "noMatch";
-        Set<String> result = service.processDrudle(drudle);
+        Set<String> result = service.processDrudle(drudle).stream().map(DrudleRuleResult::getOutput).collect(Collectors.toSet());
         // assert that no result is returned
         assertNotNull(result);
         assertTrue(result.isEmpty());
@@ -38,7 +39,7 @@ class DrudleServiceImplSimpleRuleTest {
     void testOneApply() {
         // apply drudle to service that does match
         String drudle = "1test2";
-        Set<String> result = service.processDrudle(drudle);
+        Set<String> result = service.processDrudle(drudle).stream().map(DrudleRuleResult::getOutput).collect(Collectors.toSet());
         // assert that no result is returned
         assertNotNull(result);
         assertFalse(result.isEmpty());
@@ -52,7 +53,7 @@ class DrudleServiceImplSimpleRuleTest {
     void testMultiApply() {
         // apply drudle to service that does match
         String drudle = "1test2test3";
-        Set<String> result = service.processDrudle(drudle);
+        Set<String> result = service.processDrudle(drudle).stream().map(DrudleRuleResult::getOutput).collect(Collectors.toSet());
         // assert that no result is returned
         assertNotNull(result);
         assertFalse(result.isEmpty());
