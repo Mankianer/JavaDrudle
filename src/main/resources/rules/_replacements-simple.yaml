@@ -1,0 +1,141 @@
+
+---
+name: es->s-0
+description: macht aus es -> s.
+pattern: es
+output: |
+  {head}s{tail}
+
+---
+name: be->b-0
+description: macht aus be -> b.
+pattern: be
+output: |
+  {head}b{tail}
+
+---
+name: te->t-0
+description: macht aus te -> t.
+pattern: te
+output: |
+  {head}t{tail}
+
+---
+name: ee->e-0
+description: macht aus ee -> e.
+pattern: ee
+output: |
+  {head}e{tail}
+
+---
+name: ä->a-0
+description: macht aus ä -> a.
+pattern: ä
+output: |
+  {head}a{tail}
+
+---
+name: ö->o-0
+description: macht aus ö -> o.
+pattern: ö
+output: |
+  {head}o{tail}
+
+---
+name: ü->u-0
+description: macht aus ü -> u.
+pattern: ü
+output: |
+  {head}u{tail}
+
+---
+name: ß->ss-0
+description: macht aus ß -> ss.
+pattern: ß
+output: |
+  {head}ss{tail}
+
+---
+name: ch->k-0
+description: macht aus ch -> k.
+pattern: ch
+output: |
+  {head}k{tail}
+
+---
+name: ph->f-0
+description: macht aus ph -> f.
+pattern: ph
+output: |
+  {head}f{tail}
+
+---
+name: qu->kv-0
+description: macht aus qu -> kv.
+pattern: qu
+output: |
+  {head}kv{tail}
+
+---
+name: ck->k-0
+description: macht aus ck -> k.
+pattern: ck
+output: |
+  {head}k{tail}
+
+---
+name: z->ts-0
+description: macht aus z -> ts.
+pattern: z
+output: |
+  {head}ts{tail}
+
+---
+name: x->ks-0
+description: macht aus x -> ks.
+pattern: x
+output: |
+  {head}ks{tail}
+
+---
+name: j->y-0
+description: macht aus j -> y.
+pattern: j
+output: |
+  {head}y{tail}
+
+---
+name: y->i-0
+description: macht aus y -> i.
+pattern: y
+output: |
+  {head}i{tail}
+
+---
+name: v->f-0
+description: macht aus v -> f.
+pattern: v
+output: |
+  {head}f{tail}
+
+---
+name: w->v-0
+description: macht aus w -> v.
+pattern: w
+output: |
+  {head}v{tail}
+
+---
+name: c->k-0
+description: macht aus c -> k.
+pattern: c
+output: |
+  {head}k{tail}
+
+---
+name: g->k-0
+description: macht aus g -> k.
+pattern: g
+output: |
+  {head}k{tail}
+

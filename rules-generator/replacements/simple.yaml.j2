@@ -1,0 +1,8 @@
+{% for target, replacement in replacements %}
+---
+name: {{ target }}->{{ replacement }}-0
+description: macht aus {{ target }} -> {{ replacement }}.
+pattern: {{ target }}
+output: |
+  {head}{{ replacement }}{tail}
+{% endfor %}

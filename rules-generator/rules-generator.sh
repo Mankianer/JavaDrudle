@@ -8,6 +8,6 @@ find "$SCRIPT_DIR" -type d | while read -r dir; do
     foldername=$(basename "$dir")
     # normalize output path $SCRIPT_DIR/../src/resources/rules/$foldername-${filename}
 
-    jinja2 "$j2file" "$dir/values.yaml" -o "$SCRIPT_DIR/../src/main/resources/rules/${foldername}-${filename}"
+    jinja2 "$j2file" "$dir/values.yaml" -o "$SCRIPT_DIR/../src/main/resources/rules/_${foldername}-${filename}"
   done
 done

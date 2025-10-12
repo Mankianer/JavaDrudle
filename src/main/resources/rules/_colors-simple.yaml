@@ -1,0 +1,196 @@
+
+---
+name: rot-0
+description: macht aus X-rot, eine entsprechend farbige Gruppe.
+pattern: rot
+output: |
+  <span style="color: #FF0000">{head}*</span>{tail}
+---
+name: rot-2
+description: macht aus rot-X, eine entsprechend farbige Gruppe.
+pattern: rot
+output: |
+  <span style="color: #FF0000">{tail}*</span>{head}
+
+---
+name: grün-0
+description: macht aus X-grün, eine entsprechend farbige Gruppe.
+pattern: grün
+output: |
+  <span style="color: #00FF00">{head}*</span>{tail}
+---
+name: grün-2
+description: macht aus grün-X, eine entsprechend farbige Gruppe.
+pattern: grün
+output: |
+  <span style="color: #00FF00">{tail}*</span>{head}
+
+---
+name: blau-0
+description: macht aus X-blau, eine entsprechend farbige Gruppe.
+pattern: blau
+output: |
+  <span style="color: #0000FF">{head}*</span>{tail}
+---
+name: blau-2
+description: macht aus blau-X, eine entsprechend farbige Gruppe.
+pattern: blau
+output: |
+  <span style="color: #0000FF">{tail}*</span>{head}
+
+---
+name: gelb-0
+description: macht aus X-gelb, eine entsprechend farbige Gruppe.
+pattern: gelb
+output: |
+  <span style="color: #FFFF00">{head}*</span>{tail}
+---
+name: gelb-2
+description: macht aus gelb-X, eine entsprechend farbige Gruppe.
+pattern: gelb
+output: |
+  <span style="color: #FFFF00">{tail}*</span>{head}
+
+---
+name: cyan-0
+description: macht aus X-cyan, eine entsprechend farbige Gruppe.
+pattern: cyan
+output: |
+  <span style="color: #00FFFF">{head}*</span>{tail}
+---
+name: cyan-2
+description: macht aus cyan-X, eine entsprechend farbige Gruppe.
+pattern: cyan
+output: |
+  <span style="color: #00FFFF">{tail}*</span>{head}
+
+---
+name: schwarz-0
+description: macht aus X-schwarz, eine entsprechend farbige Gruppe.
+pattern: schwarz
+output: |
+  <span style="color: #000000">{head}*</span>{tail}
+---
+name: schwarz-2
+description: macht aus schwarz-X, eine entsprechend farbige Gruppe.
+pattern: schwarz
+output: |
+  <span style="color: #000000">{tail}*</span>{head}
+
+---
+name: weiß-0
+description: macht aus X-weiß, eine entsprechend farbige Gruppe.
+pattern: weiß
+output: |
+  <span style="color: #FFFFFF">{head}*</span>{tail}
+---
+name: weiß-2
+description: macht aus weiß-X, eine entsprechend farbige Gruppe.
+pattern: weiß
+output: |
+  <span style="color: #FFFFFF">{tail}*</span>{head}
+
+---
+name: grau-0
+description: macht aus X-grau, eine entsprechend farbige Gruppe.
+pattern: grau
+output: |
+  <span style="color: #808080">{head}*</span>{tail}
+---
+name: grau-2
+description: macht aus grau-X, eine entsprechend farbige Gruppe.
+pattern: grau
+output: |
+  <span style="color: #808080">{tail}*</span>{head}
+
+---
+name: braun-0
+description: macht aus X-braun, eine entsprechend farbige Gruppe.
+pattern: braun
+output: |
+  <span style="color: #A52A2A">{head}*</span>{tail}
+---
+name: braun-2
+description: macht aus braun-X, eine entsprechend farbige Gruppe.
+pattern: braun
+output: |
+  <span style="color: #A52A2A">{tail}*</span>{head}
+
+---
+name: türkis-0
+description: macht aus X-türkis, eine entsprechend farbige Gruppe.
+pattern: türkis
+output: |
+  <span style="color: #40E0D0">{head}*</span>{tail}
+---
+name: türkis-2
+description: macht aus türkis-X, eine entsprechend farbige Gruppe.
+pattern: türkis
+output: |
+  <span style="color: #40E0D0">{tail}*</span>{head}
+
+---
+name: orange-0
+description: macht aus X-orange, eine entsprechend farbige Gruppe.
+pattern: orange
+output: |
+  <span style="color: #FFA500">{head}*</span>{tail}
+---
+name: orange-2
+description: macht aus orange-X, eine entsprechend farbige Gruppe.
+pattern: orange
+output: |
+  <span style="color: #FFA500">{tail}*</span>{head}
+
+---
+name: lila-0
+description: macht aus X-lila, eine entsprechend farbige Gruppe.
+pattern: lila
+output: |
+  <span style="color: #800080">{head}*</span>{tail}
+---
+name: lila-2
+description: macht aus lila-X, eine entsprechend farbige Gruppe.
+pattern: lila
+output: |
+  <span style="color: #800080">{tail}*</span>{head}
+
+---
+name: rosa-0
+description: macht aus X-rosa, eine entsprechend farbige Gruppe.
+pattern: rosa
+output: |
+  <span style="color: #FFC0CB">{head}*</span>{tail}
+---
+name: rosa-2
+description: macht aus rosa-X, eine entsprechend farbige Gruppe.
+pattern: rosa
+output: |
+  <span style="color: #FFC0CB">{tail}*</span>{head}
+
+---
+name: gold-0
+description: macht aus X-gold, eine entsprechend farbige Gruppe.
+pattern: gold
+output: |
+  <span style="color: #FFD700">{head}*</span>{tail}
+---
+name: gold-2
+description: macht aus gold-X, eine entsprechend farbige Gruppe.
+pattern: gold
+output: |
+  <span style="color: #FFD700">{tail}*</span>{head}
+
+---
+name: silber-0
+description: macht aus X-silber, eine entsprechend farbige Gruppe.
+pattern: silber
+output: |
+  <span style="color: #C0C0C0">{head}*</span>{tail}
+---
+name: silber-2
+description: macht aus silber-X, eine entsprechend farbige Gruppe.
+pattern: silber
+output: |
+  <span style="color: #C0C0C0">{tail}*</span>{head}
+

@@ -1,0 +1,14 @@
+{% for color, value in colors %}
+---
+name: {{ color }}-0
+description: macht aus X-{{ color }}, eine entsprechend farbige Gruppe.
+pattern: {{ color }}
+output: |
+  <span style="color: {{ value }}">{head}*</span>{tail}
+---
+name: {{ color }}-2
+description: macht aus {{ color }}-X, eine entsprechend farbige Gruppe.
+pattern: {{ color }}
+output: |
+  <span style="color: {{ value }}">{tail}*</span>{head}
+{% endfor %}

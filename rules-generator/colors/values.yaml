@@ -1,0 +1,17 @@
+---
+colors:
+  - [rot, "#FF0000"]
+  - [grün, "#00FF00"]
+  - [blau, "#0000FF"]
+  - [gelb, "#FFFF00"]
+  - [cyan, "#00FFFF"]
+  - [schwarz, "#000000"]
+  - [weiß, "#FFFFFF"]
+  - [grau, "#808080"]
+  - [braun, "#A52A2A"]
+  - [türkis, "#40E0D0"]
+  - [orange, "#FFA500"]
+  - [lila, "#800080"]
+  - [rosa, "#FFC0CB"]
+  - [gold, "#FFD700"]
+  - [silber, "#C0C0C0"]
