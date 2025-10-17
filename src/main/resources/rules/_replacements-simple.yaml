@@ -35,25 +35,25 @@ output: |
   {head}l{tail}
 
 ---
-name: ä->a-0
-description: macht aus ä -> a.
+name: ä->ae-0
+description: macht aus ä -> ae.
 pattern: ä
 output: |
-  {head}a{tail}
+  {head}ae{tail}
 
 ---
-name: ö->o-0
-description: macht aus ö -> o.
+name: ö->oe-0
+description: macht aus ö -> oe.
 pattern: ö
 output: |
-  {head}o{tail}
+  {head}oe{tail}
 
 ---
-name: ü->u-0
-description: macht aus ü -> u.
+name: ü->ue-0
+description: macht aus ü -> ue.
 pattern: ü
 output: |
-  {head}u{tail}
+  {head}ue{tail}
 
 ---
 name: ß->ss-0
@@ -61,88 +61,4 @@ description: macht aus ß -> ss.
 pattern: ß
 output: |
   {head}ss{tail}
-
----
-name: ch->k-0
-description: macht aus ch -> k.
-pattern: ch
-output: |
-  {head}k{tail}
-
----
-name: ph->f-0
-description: macht aus ph -> f.
-pattern: ph
-output: |
-  {head}f{tail}
-
----
-name: qu->kv-0
-description: macht aus qu -> kv.
-pattern: qu
-output: |
-  {head}kv{tail}
-
----
-name: ck->k-0
-description: macht aus ck -> k.
-pattern: ck
-output: |
-  {head}k{tail}
-
----
-name: z->ts-0
-description: macht aus z -> ts.
-pattern: z
-output: |
-  {head}ts{tail}
-
----
-name: x->ks-0
-description: macht aus x -> ks.
-pattern: x
-output: |
-  {head}ks{tail}
-
----
-name: j->y-0
-description: macht aus j -> y.
-pattern: j
-output: |
-  {head}y{tail}
-
----
-name: y->i-0
-description: macht aus y -> i.
-pattern: y
-output: |
-  {head}i{tail}
-
----
-name: v->f-0
-description: macht aus v -> f.
-pattern: v
-output: |
-  {head}f{tail}
-
----
-name: w->v-0
-description: macht aus w -> v.
-pattern: w
-output: |
-  {head}v{tail}
-
----
-name: c->k-0
-description: macht aus c -> k.
-pattern: c
-output: |
-  {head}k{tail}
-
----
-name: g->k-0
-description: macht aus g -> k.
-pattern: g
-output: |
-  {head}k{tail}
 

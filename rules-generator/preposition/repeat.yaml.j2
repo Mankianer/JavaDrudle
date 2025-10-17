@@ -1,0 +1,12 @@
+{% for pattern in head_then_tail %}
+---
+name: htt-{{ pattern }}-0
+description: macht aus X-{{ word }}-Y, eine X-dann-Y-Gruppe.
+pattern: {{ word }}
+output: |
+  {head}
+  <span style="display: flex; flex-direction: row;">
+      <span>&nbsp;{head}*</span>
+      <span>{tail}*</span>
+  </span>
+{% endfor %}
